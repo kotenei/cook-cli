@@ -14,6 +14,7 @@
     "lib"
   ],
   "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
   "repository": {
@@ -25,5 +26,6 @@
   },
   "bugs": {
     "url": "https://github.com/kotenei/cook-cli/issues"
-  }
+  },
+  "gitHead": "116b8e9fd158c761005089ec82671ea8b0662d4c"
 }

@@ -6,6 +6,9 @@
   "homepage": "https://github.com/kotenei/cook-cli/tree/main/packages/core#readme",
   "license": "MIT",
   "main": "lib/core.js",
+  "bin": {
+    "cook-cli": "bin/index.js"
+  },
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -14,6 +17,7 @@
     "lib"
   ],
   "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
   "repository": {
@@ -28,5 +32,6 @@
   },
   "dependencies": {
     "@cook-cli/utils": "^0.0.1"
-  }
+  },
+  "gitHead": "116b8e9fd158c761005089ec82671ea8b0662d4c"
 }
