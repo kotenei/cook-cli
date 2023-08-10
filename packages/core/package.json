@@ -31,7 +31,7 @@
     "url": "https://github.com/kotenei/cook-cli/issues"
   },
   "dependencies": {
-    "@cook-cli/utils": "^0.0.4"
+    "@cook-cli/utils": "^0.0.5"
   },
   "gitHead": "116b8e9fd158c761005089ec82671ea8b0662d4c"
 }
