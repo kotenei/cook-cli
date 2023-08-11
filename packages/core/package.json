@@ -1,6 +1,6 @@
 {
   "name": "@cook-cli/core",
-  "version": "0.0.3",
+  "version": "0.0.2",
   "description": "> TODO: description",
   "author": "Rain <kotenei@qq.com>",
   "homepage": "https://github.com/kotenei/cook-cli/tree/main/packages/core#readme",
@@ -31,7 +31,7 @@
     "url": "https://github.com/kotenei/cook-cli/issues"
   },
   "dependencies": {
-    "@cook-cli/utils": "^0.0.3"
+    "@cook-cli/utils": "^0.0.2"
   },
   "gitHead": "116b8e9fd158c761005089ec82671ea8b0662d4c"
 }
