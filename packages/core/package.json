@@ -5,7 +5,7 @@
   "author": "Rain <kotenei@qq.com>",
   "homepage": "https://github.com/kotenei/cook-cli/tree/main/packages/core#readme",
   "license": "MIT",
-  "main": "lib/core.js",
+  "main": "lib/index.js",
   "bin": {
     "cook-cli": "bin/index.js"
   },
@@ -31,7 +31,17 @@
     "url": "https://github.com/kotenei/cook-cli/issues"
   },
   "dependencies": {
-    "@cook-cli/utils": "^0.0.5"
+    "@cook-cli/utils": "^0.0.5",
+    "colors": "^1.4.0",
+    "commander": "^11.0.0",
+    "dotenv": "^16.3.1",
+    "import-local": "^3.1.0",
+    "minimist": "^1.2.8",
+    "npmlog": "^7.0.1",
+    "path-exists": "4.0.0",
+    "root-check": "1.0.0",
+    "semver": "^7.5.4",
+    "user-home": "^3.0.0"
   },
   "gitHead": "116b8e9fd158c761005089ec82671ea8b0662d4c"
 }
