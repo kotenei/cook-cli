@@ -1,5 +1,12 @@
 {
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
-  "useWorkspaces": true,
-  "version": "0.0.5"
+  "useWorkspaces": false,
+  "version": "0.0.5",
+  "packages": [
+    "packages/core",
+    "packages/utils",
+    "packages/command",
+    "packages/commands",
+    "packages/package"
+  ]
 }

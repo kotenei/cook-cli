@@ -24,19 +24,18 @@
     "type": "git",
     "url": "git+https://github.com/kotenei/cook-cli.git"
   },
-  "scripts": {
-    "test": "node ./__tests__/core.test.js"
-  },
+  "scripts": {},
   "bugs": {
     "url": "https://github.com/kotenei/cook-cli/issues"
   },
   "dependencies": {
     "@cook-cli/utils": "^0.0.5",
+    "@cook-cli/commands": "^0.0.5",
+    "@cook-cli/package": "^0.0.5",
     "colors": "^1.4.0",
     "commander": "^11.0.0",
     "dotenv": "^16.3.1",
     "import-local": "^3.1.0",
-    "minimist": "^1.2.8",
     "npmlog": "^7.0.1",
     "path-exists": "4.0.0",
     "root-check": "1.0.0",

@@ -1,11 +1,11 @@
 {
-  "name": "@cook-cli/commands",
+  "name": "@cook-cli/command",
   "version": "0.0.5",
   "description": "> TODO: description",
   "author": "Rain <kotenei@qq.com>",
-  "homepage": "https://github.com/kotenei/cook-cli/tree/main/packages/commands#readme",
+  "homepage": "https://github.com/kotenei/cook-cli/tree/main/packages/command#readme",
   "license": "MIT",
-  "main": "index.js",
+  "main": "lib/index.js",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -13,9 +13,6 @@
   "files": [
     "lib"
   ],
-  "publishConfig": {
-    "access": "public"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kotenei/cook-cli.git"

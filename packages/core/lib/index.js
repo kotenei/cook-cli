@@ -3,42 +3,48 @@
 const path = require("path");
 const pathExists = require("path-exists");
 const commander = require("commander");
+const userHome = require("user-home");
 
 // 引入版本对比第三方库 semver
 const semver = require("semver");
 // 引入颜色库 colors
 const colors = require("colors/safe");
-// 引入当前脚手架的 package.json 文件
-const pkg = require("../package.json");
 // 引入当前项目 utils
 const { log, npm } = require("@cook-cli/utils");
+// 引入初始化命令
+const { init } = require("@cook-cli/commands");
 // 引入配置文件
 const constant = require("./const");
-let args, userHome;
+// 引入当前脚手架的 package.json 文件
+const pkg = require("../package.json");
+const exec = require("./exec");
 
 const program = new commander.Command();
 
 const core = async (argv) => {
   try {
-    // 检查版本号
-    checkPkgVersion();
-    // 检查 node 版本
-    checkNodeVersion();
-    // 检查 root 账号
-    checkRoot();
-    // 检查用户主目录
-    checkUserHome();
-    // // 检查输入参数，判断是否开启 debug 模式
-    // checkInputArgs();
-    // 检查环境变量
-    checkEnv();
-
-    await checkGlobalUpdate();
-
-    registerCommand();
+    // 准备工作
+    await prepare();
+    // 脚手加初始化
+    await registerCommand();
   } catch (error) {
     console.log(error.message);
   }
+};
+
+const prepare = async () => {
+  // 检查版本号
+  checkPkgVersion();
+  // 检查 root 账号
+  checkRoot();
+  // 检查用户主目录
+  checkUserHome();
+  // 检查环境变量
+  checkEnv();
+  // 检查 node 版本，可放在命令准备阶段
+  checkNodeVersion();
+  // 检查 cli 最新版本
+  await checkGlobalUpdate();
 };
 
 const registerCommand = () => {
@@ -47,15 +53,14 @@ const registerCommand = () => {
     .name(Object.keys(pkg.bin)[0])
     .usage("<command> [options]")
     .version(pkg.version)
-    .option("-d, --debug", "是否开启调试模式", false);
+    .option("-d, --debug", "是否开启调试模式", false)
+    .option("-tp, --targetPath <targetPath>", "是否指定本地调试文件", "")
 
   // 注册命令
   program
     .command("init [projectName]")
     .option("-f, --force", "是否强制初始化项目")
-    .action((projectName)=>{
-      console.log(projectName)
-    });
+    .action(exec);
 
   // 获取参数
   const params = program.opts();
@@ -71,6 +76,10 @@ const registerCommand = () => {
     // 设置 log 的等级
     log.level = process.env.LOG_LEVEL;
     log.verbose("test debug");
+  });
+
+  program.on("option:targetPath", () => {
+    process.env.CLI_TARGET_PATH = params.targetPath;
   });
 
   // 监听未注册的所有命令
@@ -118,30 +127,10 @@ const checkRoot = () => {
 
 // 检查用户主目录
 const checkUserHome = () => {
-  // 引入user-home 跨操作系统获取用户主目录
-  userHome = require("user-home");
   // 如果主目录不存在,抛出异常
   if (!userHome || !pathExists.sync(userHome)) {
     throw new Error(colors.red("当前登录用户主目录不存在"));
   }
-};
-
-// 解析参数,判断是否开启 debug 模式,并在全局变量中设置 log 等级
-const checkInputArgs = () => {
-  const minimist = require("minimist");
-  args = minimist(process.argv.slice(2));
-  checkArgs();
-};
-
-// 判断是否开启 debug 模式,并在全局变量中设置 log 等级
-const checkArgs = () => {
-  if (args.debug) {
-    process.env.LOG_LEVEL = "verbose";
-  } else {
-    process.env.LOG_LEVEL = "info";
-  }
-  // 设置 log 的等级
-  log.level = process.env.LOG_LEVEL;
 };
 
 // 检查环境变量
@@ -160,7 +149,6 @@ const checkEnv = () => {
 
   // 创建默认的环境变量配置
   createDefaultConfig();
-  log.verbose("环境变量", process.env.CLI_HOME_PATH);
 };
 
 const createDefaultConfig = () => {

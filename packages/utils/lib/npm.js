@@ -8,7 +8,7 @@ const getNpmInfo = async (npmName, register) => {
     return null;
   }
   // 获取镜像地址 ,如果没有传递参数则默认使用 npm 源
-  const registerUrl = register || getRegister("npm");
+  const registerUrl = register || getRegister();
 
   // 拼接url
   const npmInfoUrl = urlJoin(registerUrl, npmName);
@@ -32,7 +32,7 @@ const getNpmInfo = async (npmName, register) => {
  * @param {*} origin 源
  * @return {*} 镜像地址
  */
-const getRegister = (origin) => {
+const getRegister = (origin = "npm") => {
   const originList = {
     npm: "https://registry.npmjs.org/",
     taobao: "https://registry.npmmirror.com/",
@@ -68,4 +68,5 @@ module.exports = {
   getNpmInfo,
   getNpmVersions,
   getNpmSemverVersion,
+  getRegister,
 };
