@@ -1,10 +1,11 @@
 const Package = require("@cook-cli/package");
 const { log } = require("@cook-cli/utils");
 const path = require("path");
+const cp = require("child_process");
 
 // package 的映射表
 const SETTINGS = {
-  init: "@cook-cli/init",
+  init: "@cook-cli/utils",
 };
 
 // 缓存目录
@@ -19,7 +20,7 @@ const CACHE_DIR = "dependencies";
  * 5.提供 update 更新方法以及 install 安装方法
  * @return {*}
  */
-const exec = (...argv) => {
+const exec = async (...argv) => {
   // 获取 targetPath
   let targetPath = process.env.CLI_TARGET_PATH;
   // 获取 modulePath
@@ -33,7 +34,7 @@ const exec = (...argv) => {
   // 获取 package 的 name  exp:根据 init 命令 映射到 @cook-cli/init 包
   const packageName = SETTINGS[cmdName];
   // 获取 package 的 version
-  const packageVersion = "latest";
+  const packageVersion = "0.0.2";
   // 模块安装路径
   let storeDir = "";
   // package 类
@@ -43,7 +44,6 @@ const exec = (...argv) => {
   if (!targetPath) {
     targetPath = path.resolve(homePath, CACHE_DIR);
     storeDir = path.resolve(targetPath, "node_modules");
-
     pkg = new Package({
       targetPath,
       storeDir,
@@ -51,12 +51,12 @@ const exec = (...argv) => {
       packageVersion,
     });
 
-    if (pkg.exists()) {
+    if (await pkg.exists()) {
       // 更新 package
-      pkg.update();
+      await pkg.update();
     } else {
       // 安装 package
-      pkg.install();
+      await pkg.install();
     }
   } else {
     pkg = new Package({
@@ -72,8 +72,46 @@ const exec = (...argv) => {
     throw new Error("模块不存在入口文件!");
   }
 
-  // 在当前进程中调用
-  rootFile && require(rootFile).init(...argv);
+  try {
+    // // 在当前进程中调用
+    // rootFile && require(rootFile).init(argv);
+    // 在 node 子进程中调用
+    const cmd = argv[argv.length - 1];
+    const newCmd = Object.create(null);
+    // 给参数瘦身
+    Object.keys(cmd).forEach((key) => {
+      if (cmd.hasOwnProperty(key) && !key.startsWith("_") && key !== "parent") {
+        newCmd[key] = cmd[key];
+      }
+    });
+    argv[argv.length - 1] = newCmd;
+
+    const code = `require('${rootFile}').init(${JSON.stringify(argv)})`;
+    const child = spawn("node", ["-e", code], {
+      cwd: process.cwd(),
+      stdio: "inherit",
+    });
+    child.on("error", (error) => {
+      log.error(error.message);
+      process.exit(1);
+    });
+    child.on("exit", (e) => {
+      log.verbose("命令执行成功");
+      process.exit(e);
+    });
+
+  } catch (error) {
+    log.error(error);
+  }
 };
+
+function spawn(command, args, options = {}) {
+  const win32 = process.platform === 'win32';
+  const cmd = win32 ? 'cmd' : command;
+  const cmdArgs = win32 ? ['/c'].concat(command, args) : args;
+  console.log(win32,cmd,cmdArgs)
+  return cp.spawn(cmd, cmdArgs, options);
+}
+
 
 module.exports = exec;

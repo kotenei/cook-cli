@@ -17,9 +17,13 @@
     "type": "git",
     "url": "git+https://github.com/kotenei/cook-cli.git"
   },
-  "scripts": {
-  },
+  "scripts": {},
   "bugs": {
     "url": "https://github.com/kotenei/cook-cli/issues"
+  },
+  "dependencies": {
+    "@cook-cli/utils": "^0.0.5",
+    "colors": "^1.4.0",
+    "semver": "^7.5.4"
   }
 }

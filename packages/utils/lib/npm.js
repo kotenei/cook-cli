@@ -23,7 +23,7 @@ const getNpmInfo = async (npmName, register) => {
       return null;
     })
     .catch((e) => {
-      return Promise.reject(e);
+      return null;
     });
 };
 
@@ -64,9 +64,20 @@ const getNpmSemverVersion = async (baseVersion, npmName, register) => {
   return newVersions[0] || null;
 };
 
+const getLatestVersion = async (npmName, registry) => {
+  const registerUrl = registry || getRegister();
+  const versions = await getNpmVersions(npmName, registerUrl);
+  if (versions) {
+    const sortVersions = versions.sort((a, b) => semver.gt(b, a));
+    return sortVersions.at(-1);
+  }
+  return null;
+};
+
 module.exports = {
   getNpmInfo,
   getNpmVersions,
   getNpmSemverVersion,
   getRegister,
+  getLatestVersion
 };

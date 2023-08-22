@@ -20,9 +20,12 @@
     "type": "git",
     "url": "git+https://github.com/kotenei/cook-cli.git"
   },
-  "scripts": {
-  },
+  "scripts": {},
   "bugs": {
     "url": "https://github.com/kotenei/cook-cli/issues"
+  },
+  "dependencies": {
+    "@cook-cli/command": "^0.0.5",
+    "@cook-cli/utils": "^0.0.5"
   }
 }

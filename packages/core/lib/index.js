@@ -41,8 +41,6 @@ const prepare = async () => {
   checkUserHome();
   // 检查环境变量
   checkEnv();
-  // 检查 node 版本，可放在命令准备阶段
-  checkNodeVersion();
   // 检查 cli 最新版本
   await checkGlobalUpdate();
 };
