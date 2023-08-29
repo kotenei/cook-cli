@@ -99,19 +99,16 @@ const exec = async (...argv) => {
       log.verbose("命令执行成功");
       process.exit(e);
     });
-
   } catch (error) {
     log.error(error);
   }
 };
 
 function spawn(command, args, options = {}) {
-  const win32 = process.platform === 'win32';
-  const cmd = win32 ? 'cmd' : command;
-  const cmdArgs = win32 ? ['/c'].concat(command, args) : args;
-  console.log(win32,cmd,cmdArgs)
+  const win32 = process.platform === "win32";
+  const cmd = win32 ? "cmd" : command;
+  const cmdArgs = win32 ? ["/c"].concat(command, args) : args;
   return cp.spawn(cmd, cmdArgs, options);
 }
-
 
 module.exports = exec;
